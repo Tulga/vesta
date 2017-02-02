@@ -13,10 +13,24 @@ if (($_SESSION['user'] == 'admin') && (!empty($_SESSION['look']))) {
 
 $path = $_REQUEST['path'];
 if (!empty($path)) {
+	set_time_limit(0);
+	if (ob_get_level()) {
+	  ob_end_clean();
+	}	
     header("Content-type: application/octet-stream");
     header("Content-Transfer-Encoding: binary");
     header("Content-disposition: attachment;filename=".basename($path));
+	/* old method
     passthru(VESTA_CMD . "v-open-fs-file " . $user . " " . escapeshellarg($path));
+	 */
+	$output = '';
+	exec(VESTA_CMD . "v-check-fs-permission-file " . $user . " " . escapeshellarg($path), $output, $return_var);
+	if ($return_var != 0) {
+	  print 'Error while opening file'; // todo: handle this more styled
+	  exit;
+	}
+	//
+	readfile($path);
     exit;
 } else {
     die('File not found');
