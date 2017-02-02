@@ -24,12 +24,11 @@ if (!empty($path)) {
     passthru(VESTA_CMD . "v-open-fs-file " . $user . " " . escapeshellarg($path));
 	 */
 	$output = '';
-	exec(VESTA_CMD . "v-check-fs-permission-file " . $user . " " . escapeshellarg($path), $output, $return_var);
+	exec(VESTA_CMD . "v-check-fs-permission " . $user . " " . escapeshellarg($path), $output, $return_var);
 	if ($return_var != 0) {
 	  print 'Error while opening file'; // todo: handle this more styled
 	  exit;
 	}
-	//
 	readfile($path);
     exit;
 } else {
