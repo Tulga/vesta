@@ -1095,11 +1095,15 @@ class UploadHandler
             if ($uploaded_file && is_uploaded_file($uploaded_file)) {
                 // multipart/formdata uploads (POST method uploads)
                 if ($append_file) {
+                    /* this method throwing permission denied (reason: admin user cant access other user directory)
                     file_put_contents(
                         $file_path,
                         fopen($uploaded_file, 'r'),
                         FILE_APPEND
-                    );
+                    );*/
+                    // append uploaded file to end of file
+					chmod($uploaded_file, 0777);
+				    exec (VESTA_CMD . "v-merge-files " . USERNAME . " " . escapeshellarg($file_path) . " " . escapeshellarg($uploaded_file), $output, $return_var);
                 } else {
                     chmod($uploaded_file, 0644);
 //                    move_uploaded_file($uploaded_file, $file_path);
@@ -1111,10 +1115,6 @@ class UploadHandler
                         //var_dump($path);
                         //var_dump($output);
                         $file->error = 'Error while saving file ';
-//                        var_dump(VESTA_CMD . "v-copy-fs-file ". USERNAME ." {$uploaded_file} {$file_path}");
-//                        var_dump($return_var);
-//                        var_dump($output);
-//                        exit();
                     }
                 }
             } else {
