@@ -1102,8 +1102,8 @@ class UploadHandler
                         FILE_APPEND
                     );*/
                     // append uploaded file to end of file
-					chmod($uploaded_file, 0777);
-				    exec (VESTA_CMD . "v-merge-files " . USERNAME . " " . escapeshellarg($file_path) . " " . escapeshellarg($uploaded_file), $output, $return_var);
+                    chmod($uploaded_file, 0777);
+                    exec (VESTA_CMD . "v-merge-files " . USERNAME . " " . escapeshellarg($file_path) . " " . escapeshellarg($uploaded_file), $output, $return_var);
                 } else {
                     chmod($uploaded_file, 0644);
 //                    move_uploaded_file($uploaded_file, $file_path);
